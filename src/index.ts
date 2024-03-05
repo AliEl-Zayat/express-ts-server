@@ -1,19 +1,21 @@
 import express, { Request, Response } from "express";
 import moment from "moment";
+import logger from "morgan";
 
 const app = express();
 const port = process.env.PORT || 8080;
 app.use(express.json());
+app.use(logger("dev"));
 
 const generateData = (queryDate: string) => {
   const isoDate = moment(queryDate, "YYYY-MM-DD").toISOString();
   const daysInMonth = moment(isoDate).daysInMonth();
   const data = [];
   for (let i = 0; i < daysInMonth; i++) {
-    const date = moment(isoDate).date(i + 1);
-    const label = date.format("D MMM");
+    const startDate = moment(isoDate).date(i + 1);
+    const date = startDate.format("YYYY-MM-DD");
     const value = Math.floor(Math.random() * 1000); // Generating random value
-    data.push({ id: i, label, value });
+    data.push({ id: i, date, value });
   }
   return data;
 };

@@ -5,18 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const moment_1 = __importDefault(require("moment"));
+const morgan_1 = __importDefault(require("morgan"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 app.use(express_1.default.json());
+app.use((0, morgan_1.default)("dev"));
 const generateData = (queryDate) => {
     const isoDate = (0, moment_1.default)(queryDate, "YYYY-MM-DD").toISOString();
     const daysInMonth = (0, moment_1.default)(isoDate).daysInMonth();
     const data = [];
     for (let i = 0; i < daysInMonth; i++) {
-        const date = (0, moment_1.default)(isoDate).date(i + 1);
-        const label = date.format("D MMM");
+        const startDate = (0, moment_1.default)(isoDate).date(i + 1);
+        const date = startDate.format("YYYY-MM-DD");
         const value = Math.floor(Math.random() * 1000); // Generating random value
-        data.push({ id: i, label, value });
+        data.push({ id: i, date, value });
     }
     return data;
 };
