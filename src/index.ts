@@ -3,17 +3,19 @@ import moment from "moment";
 
 const app = express();
 const port = process.env.PORT || 8080;
+app.use(express.json());
 
-const generateData = (selectedMonth: string) => {
-	const daysInMonth = moment(selectedMonth).daysInMonth();
-	const data = [];
-	for (let i = 0; i < daysInMonth; i++) {
-		const date = moment(selectedMonth).date(i + 1);
-		const label = date.format("D MMM");
-		const value = Math.floor(Math.random() * 1000); // Generating random value
-		data.push({ id: i, label, value });
-	}
-	return data;
+const generateData = (queryDate: string) => {
+  const isoDate = moment(queryDate, "YYYY-MM-DD").toISOString();
+  const daysInMonth = moment(isoDate).daysInMonth();
+  const data = [];
+  for (let i = 0; i < daysInMonth; i++) {
+    const date = moment(isoDate).date(i + 1);
+    const label = date.format("D MMM");
+    const value = Math.floor(Math.random() * 1000); // Generating random value
+    data.push({ id: i, label, value });
+  }
+  return data;
 };
 
 app.get("/", (_req: Request, res: Response) => {
@@ -21,8 +23,11 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.get("/metrics", (req: Request, res: Response) => {
-	res.setHeader("Content-Type", "application/json");
-	res.status(200).json(generateData(req.body?.month as string));
+  if (!req.query.date) {
+    return res.status(400).send("Query parameter 'date' is required");
+  }
+  res.setHeader("Content-Type", "application/json");
+  res.status(200).json(generateData(req.body.date));
 });
 
 app.get("/ping", (_req: Request, res: Response) => {
