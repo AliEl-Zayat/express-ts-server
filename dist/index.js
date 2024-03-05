@@ -23,9 +23,31 @@ const generateData = (queryDate) => {
 app.get("/", (_req, res) => {
     return res.send("Express Typescript on Vercel");
 });
+app.get("/stats", (req, res) => {
+    const requiredParamsArray = ["influencerId", "start", "end"];
+    const query = req.query;
+    const token = req.headers["user-token"];
+    const missingParams = requiredParamsArray.filter((param) => !query[param]);
+    if (missingParams.length) {
+        return res.status(400).send({
+            success: false,
+            message: `Query parameters ['${missingParams.join("', '")}'] are required`,
+        });
+    }
+    if (!token) {
+        return res
+            .status(403)
+            .send({ success: false, message: "UnAuthenticated user" });
+    }
+    return res
+        .status(200)
+        .json(generateData(typeof query.start === "string" && query.start));
+});
 app.get("/metrics", (req, res) => {
     if (!req.query.date) {
-        return res.status(400).send("Query parameter 'date' is required");
+        return res
+            .status(400)
+            .send({ success: false, message: "Query parameter 'date' is required" });
     }
     res.setHeader("Content-Type", "application/json");
     res.status(200).json(generateData(req.body.date));
