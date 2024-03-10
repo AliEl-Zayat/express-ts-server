@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import express, { Request, Response } from "express";
 import moment from "moment";
 import logger from "morgan";
@@ -7,7 +8,7 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(logger("dev"));
 
-const generateData = (queryDate: string) => {
+const generateMetrics = (queryDate: string) => {
   const isoDate = moment(queryDate, "YYYY-MM-DD").toISOString();
   const daysInMonth = moment(isoDate).daysInMonth();
   const data = [];
@@ -18,6 +19,30 @@ const generateData = (queryDate: string) => {
     data.push({ id: i, date, value });
   }
   return data;
+};
+
+interface Product {
+  id: string;
+  image: string;
+  name: string;
+  price: string;
+  category: string;
+  description: string;
+}
+const generateProducts = (quantity: number): Product[] => {
+  const products: Product[] = [];
+  for (let i = 0; i < quantity; i++) {
+    const product: Product = {
+      id: faker.datatype.uuid(),
+      image: faker.image.technics(),
+      name: faker.commerce.productName(),
+      price: faker.commerce.price(),
+      category: faker.commerce.department(),
+      description: faker.lorem.sentence(),
+    };
+    products.push(product);
+  }
+  return products;
 };
 
 app.get("/", (_req: Request, res: Response) => {
@@ -47,17 +72,18 @@ app.get("/stats", (req: Request, res: Response) => {
 
   return res
     .status(200)
-    .json(generateData(typeof query.start === "string" && query.start));
+    .json(generateMetrics(typeof query.start === "string" && query.start));
 });
 
-app.get("/metrics", (req: Request, res: Response) => {
-  if (!req.query.date) {
-    return res
-      .status(400)
-      .send({ success: false, message: "Query parameter 'date' is required" });
+app.get("/products", (req: Request, res: Response) => {
+  const query = req.query;
+  if (!query.limit) {
+    return res.status(400).send({
+      success: false,
+      message: "Query parameter 'limit' is required",
+    });
   }
-  res.setHeader("Content-Type", "application/json");
-  res.status(200).json(generateData(req.body.date));
+  return res.status(200).json(generateProducts(+query.limit));
 });
 
 app.get("/ping", (_req: Request, res: Response) => {

@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const faker_1 = require("@faker-js/faker");
 const express_1 = __importDefault(require("express"));
 const moment_1 = __importDefault(require("moment"));
 const morgan_1 = __importDefault(require("morgan"));
@@ -10,7 +11,7 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 app.use(express_1.default.json());
 app.use((0, morgan_1.default)("dev"));
-const generateData = (queryDate) => {
+const generateMetrics = (queryDate) => {
     const isoDate = (0, moment_1.default)(queryDate, "YYYY-MM-DD").toISOString();
     const daysInMonth = (0, moment_1.default)(isoDate).daysInMonth();
     const data = [];
@@ -21,6 +22,21 @@ const generateData = (queryDate) => {
         data.push({ id: i, date, value });
     }
     return data;
+};
+const generateProducts = (quantity) => {
+    const products = [];
+    for (let i = 0; i < quantity; i++) {
+        const product = {
+            id: faker_1.faker.datatype.uuid(),
+            image: faker_1.faker.image.technics(),
+            name: faker_1.faker.commerce.productName(),
+            price: faker_1.faker.commerce.price(),
+            category: faker_1.faker.commerce.department(),
+            description: faker_1.faker.lorem.sentence(),
+        };
+        products.push(product);
+    }
+    return products;
 };
 app.get("/", (_req, res) => {
     return res.send("Express Typescript on Vercel");
@@ -43,16 +59,17 @@ app.get("/stats", (req, res) => {
     }
     return res
         .status(200)
-        .json(generateData(typeof query.start === "string" && query.start));
+        .json(generateMetrics(typeof query.start === "string" && query.start));
 });
-app.get("/metrics", (req, res) => {
-    if (!req.query.date) {
-        return res
-            .status(400)
-            .send({ success: false, message: "Query parameter 'date' is required" });
+app.get("/products", (req, res) => {
+    const query = req.query;
+    if (!query.limit) {
+        return res.status(400).send({
+            success: false,
+            message: "Query parameter 'limit' is required",
+        });
     }
-    res.setHeader("Content-Type", "application/json");
-    res.status(200).json(generateData(req.body.date));
+    return res.status(200).json(generateProducts(+query.limit));
 });
 app.get("/ping", (_req, res) => {
     return res.send("pong 🏓");
