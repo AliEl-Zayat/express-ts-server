@@ -108,7 +108,15 @@ app.get("/categories", (req: Request, res: Response) => {
 });
 
 app.get("/sections", (req: Request, res: Response) => {
-    const sections = [
+    type TSection = {
+        id: number;
+        title: string;
+        img: string;
+        prefix: string;
+        discount: number;
+    };
+
+    const sections: TSection[] = [
         {
             id: 1,
             title: "New Arrivals",
@@ -160,6 +168,28 @@ app.get("/sections", (req: Request, res: Response) => {
         },
     ];
     return res.status(200).json(sections);
+});
+
+app.get("/banners", (req: Request, res: Response) => {
+    type TBanners = { id: number; title: string; img: string };
+    const banners: TBanners[] = [
+        {
+            id: 1,
+            title: "Elegance",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/women-slideshow_1.jpg?v=1706496888",
+        },
+        {
+            id: 2,
+            title: "Boutique",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/women-slideshow_2.jpg?v=1706581089",
+        },
+        {
+            id: 3,
+            title: "Luxury",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/women-slideshow_3.jpg?v=1706581088",
+        },
+    ];
+    return res.status(200).json(banners);
 });
 
 app.listen(port, () => {

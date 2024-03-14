@@ -145,6 +145,26 @@ app.get("/sections", (req, res) => {
     ];
     return res.status(200).json(sections);
 });
+app.get("/banners", (req, res) => {
+    const banners = [
+        {
+            id: 1,
+            title: "Elegance",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/women-slideshow_1.jpg?v=1706496888",
+        },
+        {
+            id: 2,
+            title: "Boutique",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/women-slideshow_2.jpg?v=1706581089",
+        },
+        {
+            id: 3,
+            title: "Luxury",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/women-slideshow_3.jpg?v=1706581088",
+        },
+    ];
+    return res.status(200).json(banners);
+});
 app.listen(port, () => {
     return console.log(`Server is listening on ${port}`);
 });
