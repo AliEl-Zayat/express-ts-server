@@ -86,8 +86,72 @@ app.get("/products", (req: Request, res: Response) => {
   return res.status(200).json(generateProducts(+query.limit));
 });
 
-app.get("/ping", (_req: Request, res: Response) => {
-  return res.send("pong 🏓");
+app.get("/categories", (req: Request, res: Response) => {
+  const categories = [
+    {
+      "id": 1,
+      "title": "WOMEN",
+      "prefix": "women",
+  },
+  {
+      "id": 2,
+      "title": "MEN",
+      "prefix": "men",
+  },
+  {
+      "id": 3,
+      "title": "KIDS",
+      "prefix": "kids",
+  }]
+  return res.status(200).json(categories);
+});
+
+app.get("/sections", (req: Request, res: Response) => {
+  const sections = [
+    {
+      "id": 1,
+      "title": "New Arrivals",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_1.jpg?v=1706588336",
+      "prefix": "new_arrival"
+  },
+  {
+      "id": 2,
+      "title": "Best Sellers",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_2.jpg?v=1706588480",
+      "prefix": "best_sellers"
+  },
+  {
+      "id": 3,
+      "title": "Top Rated",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_3.jpg?v=1706588479",
+      "prefix": "top_rated"
+  },
+  {
+      "id": 4,
+      "title": "Brands We Love",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_4.jpg?v=1706588479",
+      "prefix": "brands_we_love"
+  },
+  {
+      "id": 5,
+      "title": "Trending",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_5.jpg?v=1706588479",
+      "prefix": "trending"
+  },
+  {
+      "id": 6,
+      "title": "The Re-imagined",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_6.jpg?v=1706588479",
+      "prefix": "the_re-imagined"
+  },
+  {
+      "id": 7,
+      "title": "Sale",
+      "img": "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_categories_7.jpg?v=1706588480",
+      "prefix": "sale"
+  }
+  ]
+  return res.status(200).json(categories);
 });
 
 app.listen(port, () => {
