@@ -151,7 +151,7 @@ app.get("/sections", (req: Request, res: Response) => {
       "prefix": "sale"
   }
   ]
-  return res.status(200).json(categories);
+  return res.status(200).json(sections);
 });
 
 app.listen(port, () => {
