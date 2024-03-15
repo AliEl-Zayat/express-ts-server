@@ -166,7 +166,7 @@ app.get("/banners", (req, res) => {
     return res.status(200).json(banners);
 });
 app.get("/mightLikeCategories", (req, res) => {
-    const mightLikeCategory = [
+    const mightLikeCategories = [
         {
             id: 1,
             title: "Tops",
@@ -191,6 +191,48 @@ app.get("/mightLikeCategories", (req, res) => {
             id: 5,
             title: "Cardigans",
             img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr5.jpg?v=1706846710",
+        },
+    ];
+    return res.status(200).json(mightLikeCategories);
+});
+app.get("/collections", (req, res) => {
+    const collections = [
+        {
+            id: 1,
+            title: "The January Collection",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_btn_1.jpg?v=1706498225",
+        },
+        {
+            id: 2,
+            title: "Olympia's picks",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_bn_2.jpg?v=1706498225",
+        },
+    ];
+    return res.status(200).json(collections);
+});
+app.get("/ecomu-favorites", (req, res) => {
+    const mightLikeCategory = [
+        {
+            id: 1,
+            title: "Tops",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr1.jpg?v=1706497731",
+        },
+    ];
+    return res.status(200).json(mightLikeCategory);
+});
+app.get("/story", (req, res) => {
+    return res.status(200).json({
+        img: "",
+        title: "Redefining Fashion Excellence",
+        subTitle: "Here is your chance to upgrade your wardrobe with a variation of styles",
+    });
+});
+app.get("/products", (req, res) => {
+    const mightLikeCategory = [
+        {
+            id: 1,
+            title: "Tops",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr1.jpg?v=1706497731",
         },
     ];
     return res.status(200).json(mightLikeCategory);

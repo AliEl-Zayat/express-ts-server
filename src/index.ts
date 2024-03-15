@@ -194,7 +194,7 @@ app.get("/banners", (req: Request, res: Response) => {
 
 app.get("/mightLikeCategories", (req: Request, res: Response) => {
   type TMightLikeCategory = { id: number; title: string; img: string };
-  const mightLikeCategory: TMightLikeCategory[] = [
+  const mightLikeCategories: TMightLikeCategory[] = [
     {
       id: 1,
       title: "Tops",
@@ -219,6 +219,56 @@ app.get("/mightLikeCategories", (req: Request, res: Response) => {
       id: 5,
       title: "Cardigans",
       img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr5.jpg?v=1706846710",
+    },
+  ];
+  return res.status(200).json(mightLikeCategories);
+});
+
+app.get("/collections", (req: Request, res: Response) => {
+  type TCollection = { id: number; title: string; img: string };
+  const collections: TCollection[] = [
+    {
+      id: 1,
+      title: "The January Collection",
+      img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_btn_1.jpg?v=1706498225",
+    },
+    {
+      id: 2,
+      title: "Olympia's picks",
+      img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_bn_2.jpg?v=1706498225",
+    },
+  ];
+  return res.status(200).json(collections);
+});
+
+app.get("/ecomu-favorites", (req: Request, res: Response) => {
+  type TProduct = { id: number; title: string; img: string };
+  const mightLikeCategory: TProduct[] = [
+    {
+      id: 1,
+      title: "Tops",
+      img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr1.jpg?v=1706497731",
+    },
+  ];
+  return res.status(200).json(mightLikeCategory);
+});
+
+app.get("/story", (req: Request, res: Response) => {
+  return res.status(200).json({
+    img: "",
+    title: "Redefining Fashion Excellence",
+    subTitle:
+      "Here is your chance to upgrade your wardrobe with a variation of styles",
+  });
+});
+
+app.get("/products", (req: Request, res: Response) => {
+  type TProduct = { id: number; title: string; img: string };
+  const mightLikeCategory: TProduct[] = [
+    {
+      id: 1,
+      title: "Tops",
+      img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr1.jpg?v=1706497731",
     },
   ];
   return res.status(200).json(mightLikeCategory);
