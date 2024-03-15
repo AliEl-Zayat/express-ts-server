@@ -165,6 +165,36 @@ app.get("/banners", (req, res) => {
     ];
     return res.status(200).json(banners);
 });
+app.get("/mightLikeCategories", (req, res) => {
+    const mightLikeCategory = [
+        {
+            id: 1,
+            title: "Tops",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr1.jpg?v=1706497731",
+        },
+        {
+            id: 2,
+            title: "Sweatshirts",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr2.jpg?v=1706497729",
+        },
+        {
+            id: 3,
+            title: "Swim",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr3.jpg?v=1706497729",
+        },
+        {
+            id: 4,
+            title: "Dresses",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr4.jpg?v=1706497729",
+        },
+        {
+            id: 5,
+            title: "Cardigans",
+            img: "https://demo-ecomus-global.myshopify.com/cdn/shop/files/wm_ctgr5.jpg?v=1706846710",
+        },
+    ];
+    return res.status(200).json(mightLikeCategory);
+});
 app.listen(port, () => {
     return console.log(`Server is listening on ${port}`);
 });
