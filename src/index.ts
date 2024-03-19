@@ -2,12 +2,19 @@ import { faker } from "@faker-js/faker";
 import express, { Request, Response } from "express";
 import moment from "moment";
 import logger from "morgan";
+import swaggerUi from 'swagger-ui-express';
+import { app } from './index';
+import connectDb from './db';
+
+await connectDb();
 
 const app = express();
 const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(logger("dev"));
+app.use('/api-docs', swaggerUi.serve, swaggerSpec);
 
+// Function to generate metrics
 const generateMetrics = (queryDate: string) => {
   const isoDate = moment(queryDate, "YYYY-MM-DD").toISOString();
   const daysInMonth = moment(isoDate).daysInMonth();
@@ -46,10 +53,10 @@ const generateProducts = (quantity: number): Product[] => {
 };
 
 app.get("/", (_req: Request, res: Response) => {
-  return res.send("Express Typescript on Vercel");
+  res.redirect('/api-docs');
 });
 
-app.get("/stats", (req: Request, res: Response) => {
+app.get("/api/v1/stats", (req: Request, res: Response) => {
   const requiredParamsArray = ["influencerId", "start", "end"];
   const query = req.query;
   const token = req.headers["user-token"];
@@ -75,7 +82,7 @@ app.get("/stats", (req: Request, res: Response) => {
     .json(generateMetrics(typeof query.start === "string" && query.start));
 });
 
-app.get("/products", (req: Request, res: Response) => {
+app.get("/api/v1/products", (req: Request, res: Response) => {
   const query = req.query;
   if (!query.limit) {
     return res.status(400).send({
@@ -86,7 +93,7 @@ app.get("/products", (req: Request, res: Response) => {
   return res.status(200).json(generateProducts(+query.limit));
 });
 
-app.get("/categories", (req: Request, res: Response) => {
+app.get("/api/v1/categories", (req: Request, res: Response) => {
   const categories = [
     {
       id: 1,
@@ -107,7 +114,7 @@ app.get("/categories", (req: Request, res: Response) => {
   return res.status(200).json(categories);
 });
 
-app.get("/sections", (req: Request, res: Response) => {
+app.get("/api/v1/sections", (req: Request, res: Response) => {
   type TSection = {
     id: number;
     title: string;
@@ -170,7 +177,7 @@ app.get("/sections", (req: Request, res: Response) => {
   return res.status(200).json(sections);
 });
 
-app.get("/banners", (req: Request, res: Response) => {
+app.get("/api/v1/banners", (req: Request, res: Response) => {
   type TBanners = { id: number; title: string; img: string };
   const banners: TBanners[] = [
     {
@@ -192,7 +199,7 @@ app.get("/banners", (req: Request, res: Response) => {
   return res.status(200).json(banners);
 });
 
-app.get("/mightLikeCategories", (req: Request, res: Response) => {
+app.get("/api/v1/mightLikeCategories", (req: Request, res: Response) => {
   type TMightLikeCategory = { id: number; title: string; img: string };
   const mightLikeCategories: TMightLikeCategory[] = [
     {
@@ -224,7 +231,7 @@ app.get("/mightLikeCategories", (req: Request, res: Response) => {
   return res.status(200).json(mightLikeCategories);
 });
 
-app.get("/collections", (req: Request, res: Response) => {
+app.get("/api/v1/collections", (req: Request, res: Response) => {
   type TCollection = { id: number; title: string; img: string };
   const collections: TCollection[] = [
     {
