@@ -2,6 +2,9 @@ import { faker } from "@faker-js/faker";
 import express, { Request, Response } from "express";
 import moment from "moment";
 import logger from "morgan";
+import statsRouter from './routes/stats';
+import productsRouter from './routes/products';
+import categoriesRouter from './routes/categories';
 
 const app = express();
 const port = process.env.PORT || 8080;
