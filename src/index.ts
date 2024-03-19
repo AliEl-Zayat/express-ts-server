@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import express, { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 import moment from "moment";
 import logger from "morgan";
 import statsRouter from './routes/stats';
@@ -7,6 +7,16 @@ import productsRouter from './routes/products';
 import categoriesRouter from './routes/categories';
 
 const app = express();
+const statsRoute = Router();
+statsRouter(statsRoute);
+app.use('/api/v1/stats', statsRoute);
+const productsRoute = Router();
+productsRouter(productsRoute);
+app.use('/api/v1/products', productsRoute);
+const categoriesRoute = Router();
+categoriesRouter(categoriesRoute);
+app.use('/api/v1/categories', categoriesRoute);
+
 const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(logger("dev"));
